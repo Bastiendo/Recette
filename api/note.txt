@@ -1,0 +1,14 @@
+nodemon server.js
+node server.js
+
+orm : sequilize
+    npm -g install sequilize-cli
+    npm install --save sequelize@3.30.4
+    npm install --save mysql
+
+    sequelize init
+
+    sequelize model:create --attributes "email:string username:string password:string bio:string 
+    isAdmin:boolean" --name User
+
+    models.User.hasMany(models.Message);
