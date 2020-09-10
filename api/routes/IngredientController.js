@@ -24,7 +24,8 @@ module.exports = {
                 })
             }
         ],function(newIngredient) {
-            
+            return res.status(201).json({message : "l'ingredient à été crée", ingredient : newIngredient })
+
         })
     },
     listIngredient: function(req, res) {
@@ -57,15 +58,29 @@ module.exports = {
                     unite : req.body.unite ? req.body.unite : ""
                 })
                 .then(function(newIngredient) {
-                    return res.status(201).message({message : "l'ingredient à été bien modifié", ingredient : newIngredient })
+                    return res.status(201).json({message : "l'ingredient à été bien modifié", ingredient : newIngredient })
                 })
                 .catch(function(err) {
-                    return res.status(500).message({"message" : "modification impossible"})
+                    return res.status(500).json({"message" : "modification impossible"})
                 })
             }
         })
         .catch(function(err) {
-            return res.status(404).message({"message" : "ingredient introuvable"})
+            return res.status(404).json({"message" : "ingredient introuvable"})
+        })
+    },
+
+    deleteIngredient: function(req, res) {
+
+        var id = req.body.id;
+        models.Ingredient.destroy({
+            where : {id : id}
+        })
+        .then(function() {
+            return res.status(201).json({"message" : "l'ingredient a été supprimé"})
+        })
+        .catch(function(err) {
+            return res.status(404).json("message" : "impossible de supprimé l'ingrédient")
         })
     }
     

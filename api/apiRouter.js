@@ -20,7 +20,9 @@ exports.router = (function() {
     apiRouter.route('/recettes/:recetteId/dislike').post(likeController.dislikeRecette);
 
     apiRouter.route('/ingredients/').get(IngredientController.listIngredient);
+    apiRouter.route('/ingredients/').post(IngredientController.createIngredient)
     apiRouter.route('/ingredients/').put(IngredientController.updateIngredient)
+    apiRouter.route('/ingredients').delete(IngredientController.deleteIngredient)
 
     return apiRouter;
 })();
