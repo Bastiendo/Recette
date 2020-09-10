@@ -10,11 +10,19 @@ module.exports = {
       },
       id_ingredient: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Ingredients',
+          key: 'id'
+        }
       },
       id_recette: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Recettes',
+          key: 'id'
+        }
       },
       qte: {
         allowNull: false,

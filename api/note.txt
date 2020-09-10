@@ -1,5 +1,5 @@
-nodemon server.js
-node server.js
+nodemon index.js
+node index.js
 
 orm : sequilize
     npm -g install sequilize-cli
@@ -11,4 +11,14 @@ orm : sequilize
     sequelize model:create --attributes "email:string username:string password:string bio:string 
     isAdmin:boolean" --name User
 
+    sequelize db:migrate
+
     models.User.hasMany(models.Message);
+
+JWT
+    npm install jsonwebtoken --save
+                bcrypt
+                body-parser
+
+pour gerer la cascade
+    npm install async --save

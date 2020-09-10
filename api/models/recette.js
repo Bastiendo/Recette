@@ -3,27 +3,22 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Recette extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      models.Recette.belongToMany(models.Ingredient, {
-        through: 'IngredientRecette',
-        as: 'ingredient',
-        foreignKey: 'id_recette',
-        otherKey: 'id_ingredient' 
-      })
-    }
-  };
-  Recette.init({
+  var Recette = sequelize.define('Recette', {
     nom: DataTypes.STRING,
-    description: DataTypes.INTEGER
+    description: DataTypes.STRING,
+    etape: DataTypes.STRING,
+    like: DataTypes.INTEGER
   }, {
-    sequelize,
-    modelName: 'Recette',
+    classMethods: {
+      associate: function(models) {
+        
+        models.Recette.belongsTo(models.User, {
+          foreignKey: {
+            allowNull: false
+          }
+        })
+      }
+    }
   });
   return Recette;
 };

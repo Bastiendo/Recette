@@ -3,23 +3,46 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class IngredientRecette extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  };
-  IngredientRecette.init({
-    id_ingredient: DataTypes.INTEGER,
-    id_recette: DataTypes.INTEGER,
+
+  var IngredientRecette = sequelize.define('IngredientRecette', {
+    id_ingredient: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'Ingredient',
+        key: 'id'
+      }
+    },
+    id_recette: { type :DataTypes.INTEGER,
+      references: {
+        model: 'Recette',
+        key: 'id'
+      }
+    },
     qte: DataTypes.INTEGER
   }, {
-    sequelize,
-    modelName: 'IngredientRecette',
+    classMethods: {
+      associate: function(models) {
+        models.Recette.belongsToMany(models.Ingredient, {
+          through: models.IngredientRecette,
+          foreignKey: 'id_recette',
+          otherKey: 'id_ingredient' 
+        }),
+        models.Ingredient.belongsToMany(models.Recette, {
+          through: models.IngredientRecette,
+          foreignKey: 'id_ingredient',
+          otherKey: 'id_recette' 
+        })
+        models.IngredientRecette.belongsTo(models.Ingredient, {
+          foreignKey: 'id_ingredient',
+          as: 'ingredient',
+        });
+    
+        models.IngredientRecette.belongsTo(models.Recette, {
+          foreignKey: 'id_recette',
+          as: 'recette',
+        });
+      }
+    }
   });
   return IngredientRecette;
 };
