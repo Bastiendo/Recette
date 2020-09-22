@@ -80,7 +80,7 @@ module.exports = {
             return res.status(201).json({"message" : "l'ingredient a été supprimé"})
         })
         .catch(function(err) {
-            return res.status(404).json("message" : "impossible de supprimé l'ingrédient")
+            return res.status(404).json({"message" : "impossible de supprimé l'ingrédient"})
         })
     }
     
