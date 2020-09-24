@@ -3,6 +3,26 @@ var jwtUtils = require('../utils/jwt.utils');
 var asyncLib = require('async');
 
 module.exports = {
+    listLikeUser : function(req, res) {
+        var authorization = req.headers['authorization']
+        var userId = jwtUtils.getUserId(authorization);
+
+        models.Like.findAll({
+            where : {id : userId},
+        }).then(function(like) {
+            if(like) {
+                return res.status(200).json({'likes': like})
+            }
+            else {
+                return res.status(404).json({'erreur' : 'like introuvable'})
+            }
+        })
+        .catch(function(err) {
+            console.log(err);
+            return res.status(500).json({"erreur" : "récupération des like impossible"})
+        });
+    },
+
     likeRecette : function(req, res) {
 
         var authorization = req.headers['authorization']

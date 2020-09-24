@@ -86,7 +86,9 @@ module.exports = {
         var limit = parseInt(req.query.limit);
         var offset = parseInt(req.query.offset);
         var order = req.query.order;
-
+        var authorization = req.headers['authorization'];
+        var userId = jwtUtils.getUserId(authorization);
+        console.log("userId=" + userId);
         models.Recette.findAll({
             // nom:asc, 
             order : [order != null ? order.split(":") : ['nom', 'ASC']],
@@ -108,15 +110,35 @@ module.exports = {
                 // }
                 //]
             }
+            ,{
+                model : models.User
+                // where : { id : userId}
+            }
         ]
         })
         .then(function(recettes) {
-            if(recettes) {
-                return res.status(200).json({'recettes': recettes, 'length' : recettes.length})
-            }
-            else {
-                return res.status(404).json({'erreur' : 'recettes introuvable'})
-            }
+
+            models.Like.findAll({
+                where : {userId : userId},
+            }).then(function(like) {
+                if(like) {
+                    return res.status(200).json({'recettes': recettes, 'likes' : like, 'length' : recettes.length})
+                }
+                else {
+                    return res.status(200).json({'recettes': recettes,'length' : recettes.length})
+                }
+            })
+            .catch(function(err) {
+                console.log(err);
+                return res.status(500).json({"erreur" : "récupération des like impossible"})
+            });
+
+            // if(recettes) {
+            //     return res.status(200).json({'recettes': recettes, 'length' : recettes.length})
+            // }
+            // else {
+            //     return res.status(404).json({'erreur' : 'recettes introuvable'})
+            // }
         })
         .catch(function(err) {
             console.log(err);

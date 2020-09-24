@@ -16,8 +16,10 @@ exports.router = (function() {
     apiRouter.route('/recettes').post(recetteController.createRecette)
     apiRouter.route('/recettes/').get(recetteController.listRecette);
     apiRouter.route('/recettes/').put(recetteController.updateRecette)
+    
     apiRouter.route('/recettes/:recetteId/like/').post(likeController.likeRecette);
     apiRouter.route('/recettes/:recetteId/dislike').post(likeController.dislikeRecette);
+    apiRouter.route('/recettes/like/').get(likeController.listLikeUser)
 
     apiRouter.route('/ingredients/').get(IngredientController.listIngredient);
     apiRouter.route('/ingredients/').post(IngredientController.createIngredient)
